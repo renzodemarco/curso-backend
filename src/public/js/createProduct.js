@@ -17,27 +17,23 @@ form.addEventListener("submit", async event => {
         stock: stock.value,
         category: category.value.toLowerCase()
     }
-    const response = await createProduct(data)
-    if (response) {
-        alert(`Producto creado exitosamente`)
-        window.location.href = ('/products')
+    try {
+        const response = await fetch('/api/products/', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        if (!response.ok) {
+            const data = await response.json();
+            return alert(data.message)
+        }
+
+        alert("Producto creado exitosamente")
+        return window.location.href = '/products'
+    }
+    catch (error) {
+        console.log(error);
     }
 })
-
-async function createProduct(data) {
-    return await fetch('/api/products/', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(response);
-        }
-        return response.json()
-    })
-    .then(data => data)
-    .catch(error => alert(error.message))
-}

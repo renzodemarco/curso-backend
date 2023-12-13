@@ -12,37 +12,29 @@ addButtons.forEach(button => {
 })
 
 changeToPremium.addEventListener('click', async () => {
-    const response = await changeRole()
-    if (response) {
+    try {
+        const response = await fetch('/api/auth/prem', {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        if (!response.ok) {
+            const data = await response.json();
+            return alert(data.message)
+        }
+
         alert("Se ha cambiado el rol")
         return window.location.href = '/products'
+    } 
+    catch (error) {
+        console.log(error);
     }
 })
 
 async function addProduct(product) {
     return fetch(`/api/carts/${product}`, {
         method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response);
-            }
-            return response.json();
-        })
-        .then(data => {
-            return data
-        })
-        .catch(error => {
-            alert(error.message);
-        });
-}
-
-async function changeRole() {
-    return fetch('/api/auth/prem', {
-        method: 'PUT',
         headers: {
             "Content-Type": "application/json"
         }

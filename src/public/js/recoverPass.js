@@ -41,7 +41,7 @@ form.addEventListener('submit', async event => {
         }
 
         alert("Contraseña modificada con éxito")
-        window.location.href = '/login'
+        return window.location.href = '/login'
     } 
     catch (error) {
         console.log(error);
