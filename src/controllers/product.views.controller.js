@@ -2,9 +2,9 @@ import * as productServices from '../services/product.services.js'
 
 export const GETProducts = async (req, res, next) => {
     try {
-        const { limit = 10, page = 1, sort, query = [] } = req.query;
+        const { limit = 10, page = 1, sort, query = [], all } = req.query;
         const options = {
-            limit: Number(limit), 
+            limit: all ? 100 : Number(limit), 
             page: Number(page), 
             sort, 
             query
@@ -16,17 +16,19 @@ export const GETProducts = async (req, res, next) => {
 
         const {first_name, last_name, role, cart, _id} = req.user 
 
+        const showAll = !all
+
         if (role === 'admin') {
-            return res.render('products-admin', { admin: true, products: docs, first_name, last_name })
+            return res.render('products-admin', { admin: true, products: docs, first_name, last_name, showAll })
         }
 
         if (role === 'premium') {
             const ownProducts = docs.filter(prod => prod.owner === _id.toString())
             const otherProducts = docs.filter(prod => prod.owner !== _id.toString())
-            return res.render('products-premium', { products: otherProducts, ownProducts, first_name, last_name, premium: true, cart: cart?._id, user: _id })
+            return res.render('products-premium', { products: otherProducts, ownProducts, first_name, last_name, premium: true, cart: cart?._id, user: _id, showAll })
         }
 
-        return res.render('products-user', { products: docs, first_name, last_name, cart: cart?._id, user: _id })
+        return res.render('products-user', { products: docs, first_name, last_name, cart: cart?._id, user: _id, showAll })
     }
     catch(error) {
         error.from = 'controller'

@@ -39,27 +39,29 @@
     {{/each}}
 
     {{#each products}}
-    <div class="product-container">
-        <ul>
-            <li>
-                <h2>{{this.title}} ({{this.year}})</h2>
-            </li>
-            <li><b>Artista: </b>{{this.description}}</li>
-            <li><b>Precio: </b>${{this.price}}</li>
-            <li><b>Categoría: </b>{{this.category}}</li>
-            <li><b>Stock: </b>{{this.stock}}</li>
-            <li><b>Code: </b>{{this.code}}</li>
-        </ul>
-        <button id="addToCart" type="button" class="add-product btn btn-warning" product-id="{{this._id}}">
-            Agregar al carrito
-        </button>
-    </div>
+        <div class="product-container">
+            <ul>
+                <li>
+                    <h2>{{this.title}} ({{this.year}})</h2>
+                </li>
+                <li><b>Artista: </b>{{this.description}}</li>
+                <li><b>Precio: </b>${{this.price}}</li>
+                <li><b>Categoría: </b>{{this.category}}</li>
+                <li><b>Stock: </b>{{this.stock}}</li>
+                <li><b>Code: </b>{{this.code}}</li>
+            </ul>
+            <button id="addToCart" type="button" class="add-product btn btn-warning" product-id="{{this._id}}">
+                Agregar al carrito
+            </button>
+        </div>
     {{/each}}
-    <div class="product-container">
-        <button type="button" class="btn btn-warning">
-            <a href="/products?limit=100">Ver todos los productos</a>
-        </button>
-    </div>
+    {{#if showAll}}
+        <div class="product-container">
+            <button type="button" class="btn btn-warning">
+                <a href="/products?all=true">Ver todos los productos</a>
+            </button>
+        </div>
+    {{/if}}
 </main>
 
 

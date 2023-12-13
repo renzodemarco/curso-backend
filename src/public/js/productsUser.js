@@ -1,6 +1,8 @@
 const changeToPremium = document.getElementById("change-to-premium")
 const addButtons = document.querySelectorAll('.add-product')
 
+console.log("chotos")
+
 addButtons.forEach(button => {
     button.addEventListener("click", async event => {
         const productId = event.target.getAttribute("product-id");

@@ -117,7 +117,7 @@ export const deleteUser = async (id) => {
     }
 }
 
-export const postRecoverPassRequest = async (email) => {
+export const postRecoverPassRequest = async (email, domain) => {
     try {
         const user = getUserByEmail(email)
 
@@ -130,7 +130,7 @@ export const postRecoverPassRequest = async (email) => {
             to: email,
             subject: "Recuperación de contraseña",
             html: `<h2>Recuperación de contraseña</h2>
-            <p>Para restablecer tu contraseña, haga clic <a href="http://localhost:8080/recover-password?token=${token}">aquí</a>.</p>
+            <p>Para restablecer tu contraseña, haga clic <a href=${domain}/recover-password?token=${token}>aquí</a>.</p>
         </body>`
         }) 
         if (response) return { success: true, message: "Correo enviado correctamente" }

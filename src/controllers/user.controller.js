@@ -110,8 +110,6 @@ export const PUTRole = async (req, res, next) => {
 
         if (!user) throw new Error('Could not update user')
 
-        console.log(user)
-
         return res.status(200).json({ success: true, role: user.role })
     }
     catch (error) {
@@ -136,11 +134,12 @@ export const POSTLogout = (req, res, next) => {
 export const POSTRecoverPassRequest = async (req, res) => {
     try {
         const { email } = req.body
-        const response = await userServices.postRecoverPassRequest(email)
-        return res.json(response)
+        const domain = `${req.protocol}://${req.get('host')}`;
+        const response = await userServices.postRecoverPassRequest(email, domain)
+        return res.status(200).json(response)
     }
     catch(error) {
-        throw error
+        return next(error)
     }
 }
 
