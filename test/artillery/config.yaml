@@ -1,0 +1,42 @@
+config:
+  pluggins:
+    metrics-by-endpoint: {}
+  target: http://localhost:8080/api
+  phases: 
+    - duration: 10
+      arrivalRate: 10
+      name: app performance testing
+scenarios:  
+  - name: admin login, product creation, product destroy and logout
+    flow:
+      - log: admin login
+      - post:
+          url: /auth/login 
+          json:
+            email: admincoder@coder.com
+            password: adminCod3r123
+          capture:
+            - json: $.accessToken
+              as: token
+      - log: create one product
+      - post:
+          url: /products 
+          json:
+            title: Producto
+            description: Descripción
+            year: 2023
+            price: 100
+            code: abcdef
+            stock: 10
+            category: pop
+          capture:
+            - json: $._id
+              as: pid
+      - log: destroy one product
+      - delete:
+          url: /products/{{pid}}
+      - log: sign out
+      - post:
+          url: /auth/signout 
+          cookies:
+            myTokenCookie: {{token}}

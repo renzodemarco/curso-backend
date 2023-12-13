@@ -120,30 +120,10 @@ components:
           _v: 0
       updateSuccess:
         type: object
-        description: Objeto con el usuario actualizado
+        description: Respuesta de éxito con el nuevo rol del usuario
         example:
-          first_name: María Sol
-          last_name: Domínguez Dahl
-          email: solcis@gmail.com
-          age: 25
-          password: $2b$10$avZGokuFhhjh88jasHYiKuo4hJdwoMkHhYjYFiod/ItzmRzGBeH7e
-          cart: 651842d299f3f80802c58256
-          role: premium
-          _id: 653bc489806d3d93518d1ea8
-          _v: 0
-      deleteSuccess:
-        type: object
-        description: Objeto con el usuario eliminado
-        example:
-          first_name: María Sol
-          last_name: Domínguez Dahl
-          email: solcis@gmail.com
-          age: 25
-          password: $2b$10$avZGokuFhhjh88jasHYiKuo4hJdwoMkHhYjYFiod/ItzmRzGBeH7e
-          cart: 651842d299f3f80802c58256
-          role: premium
-          _id: 653bc489806d3d93518d1ea8
-          _v: 0
+          success: true
+          newRole: premium
       clientError:
         type: object
         properties:
@@ -298,6 +278,32 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/sessions/responses/clientError"
+        "500":
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/sessions/responses/serverError"
+  /api/auth/prem:
+    put:
+      summary: Cambiar el rol del usuario
+      tags:
+        - Sessions
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Éxito en el cambio de rol
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/sessions/responses/updateSuccess"
+        "401":
+          description: Sin autenticación
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/sessions/responses/authenticationError"
         "500":
           description: Error del servidor
           content:
