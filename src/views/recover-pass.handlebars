@@ -1,0 +1,36 @@
+<header class="w-100 dark">
+    <a class="logo" href="/">CD Commerce</a>
+    <nav class="navbar navbar-expand-lg">
+        <button type="button" class="btn btn-warning">
+            <a href="/products">Productos</a>
+        </button>
+        <button type="button" class="btn btn-warning">
+            <a href="/login">Ingresar</a>
+        </button>
+        <button type="button" class="btn btn-warning">
+            <a href="/register">Registrarse</a>
+        </button>
+    </nav>
+    
+</header>
+
+<main class="recover-main">
+
+    <h1>Elija su nueva contraseña</h1>
+
+    <form method="post" id="form" email={{email}}>
+
+            <label for="password">Nueva contraseña:</label>
+        <input type="password" name="password" id="password">
+            <label for="password2">Repita su contraseña:</label>
+        <input type="password" name="password2" id="password2">
+
+        <p class="error" id="msg"></p>
+
+        <input class='btn btn-warning' id="submit" type="submit" value="Modificar contraseña">
+    </form>
+
+
+</main>
+
+<script src="/js/recoverPass.js"></script>

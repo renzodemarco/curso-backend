@@ -1,0 +1,566 @@
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+                description: ObjectId de referencia del producto en el carrito
+              quantity:
+                type: number
+                description: Cantidad del producto que hay en el carrito
+        owner:
+          type: string
+          description: ObjectId de referencia del usuario dueño del carrito
+      example:
+        products: [
+          {product: "61749a832daf842f3c4e2457", quantity: 1},
+          {product: "61749a832daf842f3c4e2458", quantity: 2}
+        ]
+        owner: 61749a832daf842f3c4e2456
+  carts:
+    update:
+        type: object
+        properties:
+          quantity: 
+            type: number
+            description: Nueva cantidad de productos en el carrito
+        example:
+          quantity: 3
+    responses:
+      createSuccess:
+        type: object
+        description: Objeto con el carrito creado sumado al _id y _v de Mongo DB
+        example:
+          products: []
+          _id: 653bc489806d3d93518d1ea8
+          _v: 0
+      readSuccess:
+        type: array
+        description: Array con todos los carritos
+        example:
+          [
+            { products: [],
+            _id: 653bc489806d3d93518d1ea9,
+            _v: 0},
+            { products: [],
+            _id: 653bc489806d3d93518d1ea8,
+            _v: 0},
+            { products: [],
+            _id: 653bc489806d3d93518d1ea7,
+            _v: 0}
+          ]
+      readOneSuccess:
+        type: object
+        description: Objeto con el carrito leído
+        example:
+          products: [
+            {product: "61749a832daf842f3c4e2457", quantity: 1},
+            {product: "61749a832daf842f3c4e2458", quantity: 2},
+          ]
+          _id: 653bc489806d3d93518d1ea8
+          _v: 0
+      updateSuccess:
+        type: object
+        description: Objeto con el carrito actualizado
+        example:
+          products: [
+            {product: "61749a832daf842f3c4e2457", quantity: 1},
+            {product: "61749a832daf842f3c4e2458", quantity: 3},
+          ]
+          _id: 653bc489806d3d93518d1ea8
+          _v: 0
+      deleteSuccess:
+        type: object
+        description: Objeto con el carrito eliminado
+        example:
+          products: [
+            {product: "61749a832daf842f3c4e2457", quantity: 1},
+            {product: "61749a832daf842f3c4e2458", quantity: 2},
+          ]
+          owner: 61749a832daf842f3c4e2456
+          _id: 653bc489806d3d93518d1ea8
+          _v: 0
+      clientError:
+        type: object
+        properties:
+          status:
+            type: number
+            description: Estado de la solicitud
+          from:
+            type: string
+            description: Método, endpoint y origen del error
+          message:
+            type: string
+            description: Descripción del error
+        example:
+          status: 400
+          from: POST /api/carts
+          message: Incomplete values
+      authenticationError:
+        type: object
+        properties:
+          status:
+            type: number
+            description: Estado de la solicitud
+          from:
+            type: string
+            description: Método, endpoint y origen del error
+          message:
+            type: string
+            description: Descripción del error
+        example:
+          status: 401
+          from: POST /api/carts
+          message: Invalid credentials
+      authorizationError:
+        type: object
+        properties:
+          status:
+            type: number
+            description: Estado de la solicitud
+          from:
+            type: string
+            description: Método, endpoint y origen del error
+          message:
+            type: string
+            description: Descripción del error
+        example:
+          status: 403
+          from: POST /api/carts
+          message: Not allowed
+      notFoundError:
+        type: object
+        properties:
+          status:
+            type: number
+            description: Estado de la solicitud
+          from:
+            type: string
+            description: Método, endpoint y origen del error
+          message:
+            type: string
+            description: Descripción del error
+        example:
+          status: 404
+          from: GET /api/carts
+          message: Cart not found
+      serverError:
+        type: object
+        properties:
+          status:
+            type: number
+            description: Estado de la solicitud
+          from:
+            type: string
+            description: Método, endpoint y origen del error
+          message:
+            type: string
+            description: Descripción del error
+        example:
+          status: 500
+          from: POST /api/carts
+          message: car is not defined
+
+paths: 
+  /api/carts:
+    post:
+      summary: Crear un nuevo carrito (admin)
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      responses:
+        "201":
+          description: Éxito en la creación de un carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/createSuccess'
+        "401":
+          description: Sin autenticación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authenticationError'
+        "403":
+          description: Sin autorización
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authorizationError'
+        "500":
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/serverError'
+    get:
+      summary: Leer el propio carrito (user)
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Éxito en la lectura del carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/readOneSuccess'
+        "401":
+          description: Sin autenticación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authenticationError'
+        "403":
+          description: Sin autorización
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authorizationError'
+        "404":
+          description: Carrito no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/notFoundError'
+        "500":
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#components/carts/responses/serverError'
+  /api/carts/all:
+    get:
+      summary: Leer todos los carritos (admin)
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Éxito en la lectura de los carritos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/readSuccess'
+        "401":
+          description: Sin autenticación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authenticationError'
+        "403":
+          description: Sin autorización
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authorizationError'
+        "404":
+          description: Carrito no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/notFoundError'
+        "500":
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#components/carts/responses/serverError'
+  /api/carts/{cid}:
+    get:
+      summary: Leer un carrito (admin)
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Id del carrito a leer
+        type: string
+      responses:
+        "200":
+          description: Éxito en la lectura del carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/readOneSuccess'
+        "401":
+          description: Sin autenticación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authenticationError'
+        "403":
+          description: Sin autorización
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authorizationError'
+        "404":
+          description: Carrito no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/notFoundError'
+        "500":
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#components/carts/responses/serverError'
+  /api/carts/{pid}:
+    post:
+      summary: Agregar un producto al propio carrito (user)
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Id del producto a agregar
+        type: string
+      responses:
+        "200":
+          description: Éxito al agregar el producto al carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/readOneSuccess'
+        "401":
+          description: Sin autenticación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authenticationError'
+        "403":
+          description: Sin autorización
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authorizationError'
+        "404":
+          description: Carrito no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/notFoundError'
+        "500":
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#components/carts/responses/serverError'
+  /api/carts/{cid}/products/{pid}:
+    post:
+      summary: Agregar una unidad de producto a un carrito (admin)
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Id del carrito a actualizar
+        type: string
+      - name: pid
+        in: path
+        required: true
+        description: Id del producto a agregar
+        type: string
+      responses:
+        "200":
+          description: Éxito en la actualización de un carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/updateSuccess'
+        "401":
+          description: Sin autenticación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authenticationError'
+        "403":
+          description: Sin autorización
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authorizationError'
+        "404":
+          description: Carrito o producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/notFoundError'
+        "500":
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/serverError'
+    put:
+      summary: Actualizar la cantidad de un producto en un carrito (admin)
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Id del carrito a actualizar
+        type: string
+      - name: pid
+        in: path
+        required: true
+        description: Id del producto al que se le cambiará la cantidad
+        type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/carts/update'
+      responses:
+        "200":
+          description: Éxito en la actualización de un carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/updateSuccess'
+        "400":
+          description: Falta de valores para la actualización de un carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/clientError'
+        "401":
+          description: Sin autenticación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authenticationError'
+        "403":
+          description: Sin autorización
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authorizationError'
+        "404":
+          description: Carrito o producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/notFoundError'
+        "500":
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/serverError'
+    delete:
+      summary: Eliminar una unidad de producto de un carrito (admin)
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Id del carrito a actualizar
+        type: string
+      - name: pid
+        in: path
+        required: true
+        description: Id del producto a eliminar
+        type: string
+      responses:
+        "200":
+          description: Éxito en la actualización del carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/updateSuccess'
+        "401":
+          description: Sin autenticación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authenticationError'
+        "403":
+          description: Sin autorización
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authorizationError'
+        "404":
+          description: Carrito o producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/notFoundError'
+        "500":
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/serverError'
+  /api/carts/destroy/{cid}:
+    delete:
+      summary: Eliminar un carrito (admin)
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Id del carrito a eliminar
+        type: string
+      responses:
+        "200":
+          description: Éxito en la eliminación del carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/deleteSuccess'
+        "401":
+          description: Sin autenticación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authenticationError'
+        "403":
+          description: Sin autorización
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authorizationError'
+        "404":
+          description: Carrito no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/notFoundError'
+        "500":
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#components/carts/responses/serverError'

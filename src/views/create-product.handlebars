@@ -1,0 +1,57 @@
+<header class="w-100 dark">
+    <a class="logo" href="/">CD Commerce</a>
+    <nav class="navbar navbar-expand-lg">
+        <button type="button" class="btn btn-warning">
+            <a href="/products">Volver</a>
+        </button>
+        <button type="button" class="btn btn-warning" id="sign-out">
+            Cerrar sesión
+        </button>
+    </nav>
+</header>
+
+
+<main class="create-main">
+
+    <h1>Crear nuevo producto</h1>
+
+    {{#if error}}
+        <p class="error">Ha habido un error en la creación del producto, por favor intente de nuevo</p>
+    {{/if}}
+
+    <form id="createProductForm">
+            <label for="title">Título:</label>
+        <input type="text" name="title" id="title">
+            <label for="description">Artista:</label>
+        <input type="text" name="description" id="description">
+            <label for="year">Año:</label>
+        <input type="number" name="year" id="year">
+            <label for="price">Precio:</label>
+        <input type="number" name="price" id="price">
+            <label for="stock">Stock:</label>
+        <input type="number" name="stock" id="stock">
+            <label for="category">Categoría:</label>
+        <select name="category" id="category">
+            <option value="Rock">Rock</option>
+            <option value="Pop">Pop</option>
+            <option value="Jazz">Jazz</option>
+            <option value="Latin">Latin</option>
+            <option value="Metal">Metal</option>
+            <option value="Electro">Electro</option>
+            <option value="Pop">Pop</option>
+        </select>
+
+        <input class='btn btn-warning' type="submit" id="submit" value="Crear producto">
+    </form>
+
+</main>
+
+<script src="/js/createProduct.js"></script>
+
+<script src="/js/signout.js"></script>
+
+<script>
+    function redirect(url) {
+        window.location.href = url
+    }
+</script>

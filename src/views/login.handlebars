@@ -1,0 +1,51 @@
+<header class="w-100 dark">
+    <a class="logo" href="/">CD Commerce</a>
+    <nav class="navbar navbar-expand-lg">
+        <button type="button" class="btn btn-warning">
+            <a href="/products">Productos</a>
+        </button>
+        <button type="button" class="btn btn-warning">
+            <a href="/register">Registrarse</a>
+        </button>
+    </nav>
+</header>
+
+<main class="login-main">
+    <h1>Iniciar sesión</h1>
+
+    {{#if register}}
+        <p class="msg">Usuario correctamente registrado, por favor ingrese</p>
+    {{/if}}
+
+    {{#if login}}
+        <p class="msg">Inicia sesión para comprar productos</p>
+    {{/if}}
+
+    {{#if updated}}
+        <p class="msg">Contraseña modificada, por favor ingrese</p>
+    {{/if}}
+
+
+    <form method="post" id="loginForm">
+            <label for="email">Correo electrónico:</label>
+        <input type="text" name="email" id="email">
+            <label for="name">Contraseña:</label>
+        <input type="password" name="password" id="password">
+
+        <input class="btn btn-warning" type="submit" value="Ingresar">
+    </form>
+
+    <button class="btn github-button w-100" onclick="redirect('/api/auth/github')">
+        Ingresar con GitHub 
+        <img class="github-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN0Uu0auB-_30X62d-vUYM-jhN4TkqPqgv6A&usqp=CAU" alt="github icon">
+    </button>
+
+    <button class="btn btn-secondary w-100" onclick="redirect('/recover-password/request')">Olvidé mi contraseña</button>
+</main>
+
+<script src="/js/login.js"></script>
+<script>
+    function redirect(url) {
+        window.location.href = url
+    }
+</script>

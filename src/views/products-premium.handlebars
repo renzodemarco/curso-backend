@@ -1,0 +1,69 @@
+<header class="w-100 dark">
+    <a class="logo" href="/">CD Commerce</a>
+    <nav class="navbar navbar-expand-lg">
+        <button type="button" class="btn btn-warning" id="change-to-user">
+            Darse de baja a premium :(
+        </button>
+        <button type="button" class="btn btn-warning">
+            <a href="/products/create">Crear producto</a>
+        </button>
+        <button type="button" class="btn btn-warning">
+            <a href="/carts">Ver carrito</a>
+        </button>
+        <button type="button" class="btn btn-warning" id="sign-out">
+            Cerrar sesión
+        </button>
+    </nav>
+</header>
+
+<main class="products-main">
+    {{#each ownProducts}}
+    <div class="product-container">
+        <ul>
+            <li>
+                <h2>{{this.title}} ({{this.year}})</h2>
+            </li>
+            <li><b>Artista: </b>{{this.description}}</li>
+            <li><b>Precio: </b>${{this.price}}</li>
+            <li><b>Categoría: </b>{{this.category}}</li>
+            <li><b>Stock: </b>{{this.stock}}</li>
+            <li><b>Code: </b>{{this.code}}</li>
+        </ul>
+        <button type="button" class="edit-product btn btn-warning" product-id="{{this._id}}">
+            Modificar producto
+        </button>
+        <button type="button" class="delete-product btn btn-warning" product-id="{{this._id}}">
+            Eliminar producto
+        </button>
+    </div>
+    {{/each}}
+
+    {{#each products}}
+    <div class="product-container">
+        <ul>
+            <li>
+                <h2>{{this.title}} ({{this.year}})</h2>
+            </li>
+            <li><b>Artista: </b>{{this.description}}</li>
+            <li><b>Precio: </b>${{this.price}}</li>
+            <li><b>Categoría: </b>{{this.category}}</li>
+            <li><b>Stock: </b>{{this.stock}}</li>
+            <li><b>Code: </b>{{this.code}}</li>
+        </ul>
+        <button id="addToCart" type="button" class="add-product btn btn-warning" product-id="{{this._id}}">
+            Agregar al carrito
+        </button>
+    </div>
+    {{/each}}
+</main>
+
+
+<script src="/js/productsPremium.js"></script>
+
+<script src="/js/signout.js"></script>
+
+<script>
+    function redirect(url) {
+        window.location.href = url
+    }
+</script>
