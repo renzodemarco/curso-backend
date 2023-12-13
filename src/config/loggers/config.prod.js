@@ -2,12 +2,12 @@ import { createLogger, format, transports } from 'winston'
 
 const { simple } = format 
 
-const levels = {
-    HTTP: 1,
-    INFO: 2,
+const levels = { 
+    FATAL: 1,
+    ERROR: 2,
     WARNING: 3,
-    ERROR: 4,
-    FATAL: 5
+    INFO: 4,
+    HTTP: 5
 }
 
 
@@ -19,7 +19,7 @@ export default createLogger({
             format: simple()
         }),
         new transports.File({
-            level: 'WARNING',
+            level: 'ERROR',
             format: simple(),
             filename: './src/log-register/register.log' 
         })
