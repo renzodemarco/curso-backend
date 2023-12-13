@@ -81,7 +81,7 @@ const initPassportStrategy = () => {
         {
             clientID: 'Iv1.f5767c1d761e2b30',
             clientSecret: config.GITHUB_KEY,
-            callbackURL: "http://localhost:8080/api/auth/github/callback"
+            callbackURL: "/api/auth/github/callback"
         },
         async (accessToken, refreshToken, profile, done) => {
             const email = profile._json.email
@@ -96,7 +96,7 @@ const initPassportStrategy = () => {
                         first_name: profile._json.name, 
                         last_name: '',
                         email,
-                        password: ''
+                        password: (Math.floor(Math.random() * 900000) + 100000).toString()
                     })
 
                 return done(null, newUser)
