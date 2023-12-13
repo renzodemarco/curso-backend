@@ -81,7 +81,7 @@ const initPassportStrategy = () => {
         {
             clientID: 'Iv1.f5767c1d761e2b30',
             clientSecret: config.GITHUB_KEY,
-            callbackURL: "/api/auth/github/callback"
+            callbackURL: "https://cd-commerce.up.railway.app/api/auth/github/callback"
         },
         async (accessToken, refreshToken, profile, done) => {
             const email = profile._json.email
