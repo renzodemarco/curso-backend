@@ -352,7 +352,50 @@ paths:
               schema:
                 $ref: '#/components/carts/responses/authorizationError'
         "404":
-          description: Carrito no encontrado
+          description: Carrito o producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/notFoundError'
+        "500":
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#components/carts/responses/serverError'
+    delete:
+      summary: Eliminar un producto del propio carrito (user)
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Id del producto a eliminar
+        type: string
+      responses:
+        "200":
+          description: Éxito al eliminar un producto del carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/readOneSuccess'
+        "401":
+          description: Sin autenticación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authenticationError'
+        "403":
+          description: Sin autorización
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/carts/responses/authorizationError'
+        "404":
+          description: Carrito o producto no encontrado
           content:
             application/json:
               schema:
