@@ -21,7 +21,7 @@ loginForm.addEventListener('submit', async (event) => {
     }
 
     if (response.ok) {
-        window.location.href = '/products'
+        window.location.href = '/'
     }
 
 })
