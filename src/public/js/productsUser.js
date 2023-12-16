@@ -33,22 +33,20 @@ changeToPremium.addEventListener('click', async () => {
 })
 
 async function addProduct(product) {
-    return fetch(`/api/carts/${product}`, {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response);
+    try {
+        const response = await fetch(`/api/carts/${product}`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
             }
-            return response.json();
         })
-        .then(data => {
-            return data
-        })
-        .catch(error => {
-            alert(error.message);
-        });
+        if (!response.ok) {
+            const responseData = await response.json();
+            return alert(responseData.message);
+        }
+        return await response.json()
+    }
+    catch(e) {
+        console.log(error)
+    }
 }
